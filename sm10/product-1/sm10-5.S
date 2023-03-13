@@ -13,15 +13,15 @@ product:
     mov	20(%ebp), %eax				# pointer to the result
     
     pxor %xmm2, %xmm2				# result will be in xmm2
-    xor %ebx, %ebx					# position will be in ebx
+    xor %ebx, %ebx				# position will be in ebx
 while:
-	mov %ecx, %edx					# check if there are less than 4 numbers left
+	mov %ecx, %edx				# check if there are less than 4 numbers left
 	sub %ebx, %edx
     cmp $4, %edx
     jl less_than_4
     
-    movups (%esi, %ebx, 4), %xmm0	# xmm0 = (a0, a1, a2, a3) = x[i: i+4]
-    movups (%edi, %ebx, 4), %xmm1	# xmm1 = (b0, b1, b2, b3) = y[i: i+4]
+    movups (%esi, %ebx, 4), %xmm0		# xmm0 = (a0, a1, a2, a3) = x[i: i+4]
+    movups (%edi, %ebx, 4), %xmm1		# xmm1 = (b0, b1, b2, b3) = y[i: i+4]
     
     mulps %xmm0, %xmm1				# xmm1 = (a0b0, a1b1, a2b2, a3b3)
     
@@ -31,19 +31,18 @@ while:
     
     jmp while
     
-less_than_4:						# горизонтальные операции теперь не в цикле,
-									# но hsubps все же нужен
-									
-	hsubps %xmm2, %xmm2				# xmm2 = (a0b0-a1b1, a2b2-a3b3, *, *)
+less_than_4:						
+
+    hsubps %xmm2, %xmm2				# xmm2 = (a0b0-a1b1, a2b2-a3b3, *, *)
     
     haddps %xmm2, %xmm2				# xmm2 = (a0b0-a1b1+a2b2-a3b3, *, *, *)	
 
 new_while:
-    cmp %ebx, %ecx					# check if there are no numbers left
+    cmp %ebx, %ecx				# check if there are no numbers left
     je end
     
-    movss (%esi, %ebx, 4), %xmm0	# xmm0 = x[i]
-    movss (%edi, %ebx, 4), %xmm1	# xmm1 = y[i]
+    movss (%esi, %ebx, 4), %xmm0		# xmm0 = x[i]
+    movss (%edi, %ebx, 4), %xmm1		# xmm1 = y[i]
     
     mulss %xmm0, %xmm1				# xmm1 = x[i]y[i]
     
