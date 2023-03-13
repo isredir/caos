@@ -98,8 +98,7 @@
 
 **Ваша задача** : написать функции `poliz_compile`, `poliz_new_state`, `poliz_free_state`,
 `poliz_last_error` и функции-обработчики команд польской записи. **Не сдавайте** код функции `main`.
-Вам будет доступен заголовочный файл [`poliz.h`](https://caos.myltsev.ru/cgi-bin/new-
-client?SID=2633f3fd3d7825db&prob_id=41&action=194&file=poliz.h), который вы можете включать
+Вам будет доступен заголовочный файл [`poliz.h`](https://caos.myltsev.ru/cgi-bin/new-client?SID=2633f3fd3d7825db&prob_id=41&action=194&file=poliz.h), который вы можете включать
 директивой #include.
 
 Функция `poliz_last_error` возвращает **неотрицательный** код последней ошибки при выполнении
