@@ -3,8 +3,8 @@ My solutions for the course "Computer Architecture and Operating Systems" in HSE
 Short review of the contests:
 
 - sm01: Assembly language: Basics and simpleio module
-- sm02: Assembly language: Algoritms, using stack and operations with memory
-- sm03: Assembly language: Algoritms, using C functions
+- sm02: Assembly language: Algoritms using stack and operations with memory
+- sm03: Assembly language: Algoritms using C functions
 - hny: Advanced hacks problems (bonus contest)
 - sm04: C language: Basics and string operations
 - kr01: test on the first three contests
