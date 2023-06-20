@@ -1,0 +1,66 @@
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+enum { BUF_SIZE = 1024 };
+
+void read_file(int fd[2], int num, char *arg) {
+    pid_t pid = fork();
+    int x;
+    if (pid == 0) {
+        FILE *file = fopen(arg, "r");
+        while (fscanf(file, "%d", &x) == 1) {
+            dprintf(fd[1], "%d %d\n", x, num);
+        }
+        dprintf(fd[1], "\n");
+        fclose(file);
+        close(fd[0]);
+        close(fd[1]);
+        exit(0);
+    }
+}
+
+int main(int argc, char **argv) {
+    if (argc < 3) {
+        return 1;
+    }
+    int fd[2];
+    int p = pipe(fd);
+    if (p == -1) {
+        return 1;
+    }
+    read_file(fd, 0, argv[1]);
+    read_file(fd, 1, argv[2]);
+    int e[2] = {0, 0};
+    int s[2] = {0, 0};
+    int x, num, pos;
+    char buf[BUF_SIZE];
+    while (!e[0] || !e[1]) {
+        pos = 0;
+        while (read(fd[0], buf + pos, 1) == 1) {
+            if (buf[pos++] == '\n') {
+                break;
+            }
+        }
+        if (buf[0] == '\n') {
+            if (!e[0]) {
+                e[0] = 1;
+            } else {
+                e[1] = 1;
+            }
+            continue;
+        }
+        buf[pos] = '\0';
+        if (sscanf(buf, "%d %d\n", &x, &num) == 2) {
+            s[num] += x;
+        }
+    }
+    close(fd[0]);
+    close(fd[1]);
+    wait(NULL);
+    wait(NULL);
+    printf("%d\n%d\n%d\n", s[1], s[0], s[1] + s[0]);
+    return 0;
+}
